@@ -45,11 +45,11 @@ pipeline {
     stages {
       
         //tools用法举例
-        stage('toolsExample') {
-            steps {
-                sh 'mvn -version'
-            }
-        } 
+        //stage('toolsExample') {
+            //steps {
+                //sh 'mvn -version'
+            //}
+        //} 
 
         //获取代码
         stage("GetCode"){ //阶段名称
@@ -57,6 +57,7 @@ pipeline {
                 timeout(time:5, unit:"MINUTES"){ //步骤超时时间
                     script{
                         println('获取代码')
+                        tools.PrintMes("获取代码",'green')
                         input id: 'Trubo', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'flag')], submitter: 'admin'
                     }
                 }
@@ -76,10 +77,11 @@ pipeline {
                     steps{
                         timeout(time:20, unit:"MINUTES"){
                             script{
-                                println ("${version}")
+                                //println ("${version}")
                                 println('应用打包')
-                                mvnHome = tool "mvn3.6.3"
-                                println("$mvnHome")
+                                tools.PrintMes("应用打包",'green')
+                                //mvnHome = tool "mvn3.6.3"
+                                //println("$mvnHome")
                             }
                         }
                     }
@@ -91,7 +93,7 @@ pipeline {
                         timeout(time:30, unit:"MINUTES"){
                             script{
                                 println('代码扫描')
-                                tools.PrintMes("this is jenkins share library.")
+                                tools.PrintMes("代码扫描",'green')
                             }
                         }
                     }
