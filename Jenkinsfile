@@ -6,6 +6,8 @@ def tools = new org.devops.tools()
 
 string  workSpace = "/opt/jenkins/workspace"
 
+ hello()
+
 //Pipeline
 pipeline {
     //agent any
@@ -23,9 +25,9 @@ pipeline {
     }
     
     //tools方法
-    tools {
-        maven 'mvn3.6.3'
-    }
+    // tools {
+    //     maven 'mvn3.6.3'
+    // }
 
     options {
         timestamps() //预测所有由流水线生成的控制台输出，与该流水线发出的时间一致
