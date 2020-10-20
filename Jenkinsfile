@@ -23,6 +23,11 @@ pipeline {
     environment {
         DEVOPS = 'jenkins'
     }
+    
+    //tools方法
+    // tools {
+    //     maven 'mvn3.6.3'
+    // }
 
     options {
         timestamps() //预测所有由流水线生成的控制台输出，与该流水线发出的时间一致
@@ -38,6 +43,14 @@ pipeline {
     }
 
     stages {
+      
+        //tools用法举例
+        //stage('toolsExample') {
+            //steps {
+                //sh 'mvn -version'
+            //}
+        //} 
+
         //获取代码
         stage("GetCode"){ //阶段名称
             steps{
@@ -60,12 +73,15 @@ pipeline {
             parallel {
                 //构建
                 stage("Build"){
-                    //when {environment name:'DEPLOY_ENV', value:'jilmy'}
+                    when {environment name:'DEPLOY_ENV', value:'jilmy'}
                     steps{
                         timeout(time:20, unit:"MINUTES"){
                             script{
+                                //println ("${version}")
                                 println('应用打包')
                                 tools.FormatOutput("应用打包",'green')
+                                //mvnHome = tool "mvn3.6.3"
+                                //println("$mvnHome")
                             }
                         }
                     }
