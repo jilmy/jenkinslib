@@ -62,9 +62,8 @@ pipeline {
 
             parallel {
                 //构建
-                stage("Build") {
-                    //when {environment name:'DEPLOY_ENV', value:'jilmy'}
-                    steps { //设置构建超时时间
+                stage("Build") { //设置构建超时时间
+                    steps { 
                         timeout(time:20, unit:"MINUTES") {
                             script {
                                 println('应用打包')
