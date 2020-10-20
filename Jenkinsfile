@@ -45,8 +45,8 @@ pipeline {
             steps {
                 timeout(time:5, unit:"MINUTES") { //设置获取代码的超时时间
                     script {
-                        println('获取代码')
-                        tools.printMes("获取代码",'green')
+                        print('获取代码')
+                        tools.PrintMes("获取代码",'green')
                         //input id: 'Roll', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'roll')], submitter: 'admin'                    
                     }
                 }
@@ -62,12 +62,13 @@ pipeline {
 
             parallel {
                 //构建
-                stage("Build") { //设置构建超时时间
-                    steps { 
+                stage("Build") {
+                    //when {environment name:'DEPLOY_ENV', value:'jilmy'}
+                    steps { //设置构建超时时间
                         timeout(time:20, unit:"MINUTES") {
                             script {
-                                println('应用打包')
-                                tools.printMes("应用打包",'green')
+                                print('应用打包')
+                                tools.PrintMes("应用打包",'green')
                             }
                         }
                     }
@@ -78,8 +79,8 @@ pipeline {
                     steps {
                         timeout(time:30, unit:"MINUTES") {
                             script {
-                                println('代码扫描')
-                                tools.printMes("代码扫描",'green')
+                                print('代码扫描')
+                                tools.PrintMes("代码扫描",'green')
                             }
                         }
                     }
