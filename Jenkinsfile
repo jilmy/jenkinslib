@@ -54,9 +54,9 @@ pipeline {
 
         //构建和代码扫描并行执行放入一个stage中
         stage("ParallelStage") {
-            when {
-                branch 'main'
-            }
+            // when {
+            //     branch 'main'
+            // }
             failFast true //第1个运行失败，后面全部失败
 
             parallel {
