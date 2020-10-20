@@ -62,7 +62,7 @@ pipeline {
             parallel {
                 //构建
                 stage("Build") {
-                    //when {environment name:'DEPLOY_ENV', value:'jilmy'}
+                    when {environment name:'DEPLOY_ENV', value:'jilmy'}
                     steps { //设置构建超时时间
                         timeout(time:20, unit:"MINUTES") {
                             script {
