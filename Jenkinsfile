@@ -90,7 +90,7 @@ pipeline {
                         timeout(time:30, unit:"MINUTES"){
                             script{
                                 println('代码扫描')
-                                tools.FOrmatOutput("代码扫描",'green')
+                                tools.FormatOutput("代码扫描",'green')
                             }
                         }
                     }
