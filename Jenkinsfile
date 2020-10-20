@@ -3,7 +3,7 @@
 //引用系统配置的jenkinslib
 @Library('jenkinslib') _
 
-def tools = new org.devops.formatOutput()
+def tools = new org.devops.tools()
 
 string  workSpace = "/opt/jenkins/workspace"
 
@@ -45,7 +45,7 @@ pipeline {
                 timeout(time:5, unit:"MINUTES") { //设置获取代码的超时时间
                     script {
                         println('获取代码')
-                        tools.formatOutput("获取代码",'green')
+                        tools.FormatOutput("获取代码",'green')
                         //input id: 'Roll', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'roll')], submitter: 'admin'                    
                     }
                 }
@@ -67,7 +67,7 @@ pipeline {
                         timeout(time:20, unit:"MINUTES") {
                             script {
                                 println("应用打包")
-                                tools.formatOutput("应用打包",'green')
+                                tools.FormatOutput("应用打包",'green')
                             }
                         }
                     }
@@ -79,7 +79,7 @@ pipeline {
                         timeout(time:30, unit:"MINUTES") {
                             script {
                                 println("代码扫描")
-                                tools.formatOutput("代码扫描",'green')
+                                tools.FormatOutput("代码扫描",'green')
                             }
                         }
                     }
@@ -126,4 +126,4 @@ pipeline {
             }
         }
     }
-} 
+}    
