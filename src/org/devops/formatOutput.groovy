@@ -1,15 +1,4 @@
 package org.devops
-//格式化输出
-def PrintMes(vals,cor) {
-    cors = ['red' : "\033[40;31m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m",
-              'yellow' : "\033[33m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m",
-              'blue' : "\033[40;31m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m",
-              'green' : "\033[32m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m",
-              'black' : "\033[30m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m" ]
-    ansiColor('xterm') {
-        println(cors[cor])
-    }
-}
 
 //格式化输出
 def FormatOutput(value,color) {
