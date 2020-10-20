@@ -65,7 +65,7 @@ pipeline {
                     //when {environment name:'DEPLOY_ENV', value:'jilmy'}
                     steps {
                         timeout(time:20, unit:"MINUTES") {
-                            script {
+                            script{
                                 println('应用打包')
                                 tools.FormatOutput("应用打包",'green')
                             }
@@ -77,7 +77,7 @@ pipeline {
                 stage("CodeScan") {
                     steps {
                         timeout(time:30, unit:"MINUTES") {
-                            script {
+                            script{
                                 println('代码扫描')
                                 tools.FormatOutput("代码扫描",'green')
                             }
@@ -91,37 +91,37 @@ pipeline {
     //构建后的操作
     post {
         always { //总是执行
-            script {
+            script{
                 println("always")
             }
         }
 
         changed { //当前流水线或者阶段完成状态与之前不同时执行
-            script {
+            script{
                 currentBuild.description = "\n 发现不同，触发构建."
             }        
         }
 
         success { //成功后执行
-            script {
+            script{
                 currentBuild.description = "\n 构建成功."
             }        
         }
 
         failure { //失败后执行
-            script {
+            script{
                 currentBuild.description = "\n 构建失败."
             }        
         }
 
         unstable { //当前流水线或者阶段完成状态是"unstable",执行
-            script {
+            script{
                 currentBuild.description = "\n 状态为unstable,触发构建."
             }        
         }
 
         aborted { //取消后执行
-            script {
+            script{
                 currentBuild.description = "\n 构建取消."
             }        
         }
