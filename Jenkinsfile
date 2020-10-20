@@ -42,7 +42,7 @@ pipeline {
     stages {
         //获取代码
         stage("GetCode") { //阶段名称
-            steps{
+            steps {
                 timeout(time:5, unit:"MINUTES") { //步骤超时时间
                     script {
                         println('获取代码')
