@@ -11,10 +11,8 @@ string  workSpace = "/opt/jenkins/workspace"
 //Pipeline
 pipeline {
     //agent any
-    agent { 
-        node { 
-            label "build" //指定运行节点的标签
-            customWorkspace "${workSpace}" //指定运行工作目录
+    agent { node { label "build" //指定运行节点的标签
+                   customWorkspace "${workSpace}" //指定运行工作目录
         }
     }
     
@@ -44,7 +42,7 @@ pipeline {
         stage("GetCode"){ //阶段名称
             steps{
                 timeout(time:5, unit:"MINUTES"){ //步骤超时时间
-                    script {
+                    script{
                         println('获取代码')
                         tools.FormatOutput("获取代码",'green')
                         //input id: 'Trubo', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'flag')], submitter: 'admin'
@@ -54,7 +52,7 @@ pipeline {
         }
       
         //构建和代码扫描并行执行放入一个stage中 
-        stage("ParallelStage"){
+        stage("Parallel Stage") {
             // when {
             //     branch 'node'
             // }
