@@ -1,7 +1,7 @@
 package org.devops
 
 //格式化输出printmes
-def printmes(value,color) {
+def printMes(value,color) {
     colors = ['red' : "\033[40;31m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m",
               'yellow' : "\033[33m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m",
               'blue' : "\033[40;31m >>>>>>>>>> ${value} <<<<<<<<<< \033[0m",
