@@ -46,7 +46,7 @@ pipeline {
                 timeout(time:5, unit:"MINUTES") { //设置获取代码的超时时间
                     script {
                         print('获取代码')
-                        tools.PrintMes("获取代码",'green')
+                        tools.FormatOutput("获取代码",'green')
                         //input id: 'Roll', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'roll')], submitter: 'admin'                    
                     }
                 }
@@ -68,7 +68,7 @@ pipeline {
                         timeout(time:20, unit:"MINUTES") {
                             script {
                                 print('应用打包')
-                                tools.PrintMes("应用打包",'green')
+                                tools.FormatOutput("应用打包",'green')
                             }
                         }
                     }
@@ -80,7 +80,7 @@ pipeline {
                         timeout(time:30, unit:"MINUTES") {
                             script {
                                 print('代码扫描')
-                                tools.PrintMes("代码扫描",'green')
+                                tools.FormatOutput("代码扫描",'green')
                             }
                         }
                     }
