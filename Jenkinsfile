@@ -67,7 +67,7 @@ pipeline {
                         timeout(time:20, unit:"MINUTES") {
                             script {
                                 println("应用打包")
-                                tools.FormatOutput("应用打包1",'green')
+                                tools.FormatOutput("应用打包",'green')
                             }
                         }
                     }
