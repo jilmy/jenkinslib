@@ -11,8 +11,10 @@ string  workSpace = "/opt/jenkins/workspace"
 //Pipeline
 pipeline {
     //agent any
-    agent { node { label "build" //指定运行节点的标签
-                   customWorkspace "${workSpace}" //指定运行工作目录
+    agent { 
+        node { 
+            label "build" //指定运行节点的标签
+            customWorkspace "${workSpace}" //指定运行工作目录
         }
     }
     
@@ -23,11 +25,6 @@ pipeline {
     environment {
         DEVOPS = 'jenkins'
     }
-    
-    //tools方法
-    // tools {
-    //     maven 'mvn3.6.3'
-    // }
 
     options {
         timestamps() //预测所有由流水线生成的控制台输出，与该流水线发出的时间一致
@@ -43,19 +40,11 @@ pipeline {
     }
 
     stages {
-      
-        //tools用法举例
-        //stage('toolsExample') {
-            //steps {
-                //sh 'mvn -version'
-            //}
-        //} 
-
         //获取代码
         stage("GetCode"){ //阶段名称
-            steps{
-                timeout(time:5, unit:"MINUTES"){ //步骤超时时间
-                    script{
+            steps {
+                timeout(time:5, unit:"MINUTES") { //步骤超时时间
+                    script {
                         println('获取代码')
                         tools.FormatOutput("获取代码",'green')
                         //input id: 'Trubo', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'flag')], submitter: 'admin'
@@ -65,18 +54,18 @@ pipeline {
         }
       
         //构建和代码扫描并行执行放入一个stage中 
-        stage("Parallel Stage") {
+        stage("ParallelStage") {
             // when {
             //     branch 'node'
             // }
             failFast true //第1个运行失败，后面全部失败
             parallel {
                 //构建
-                stage("Build"){
-                    when {environment name:'DEPLOY_ENV', value:'jilmy'}
-                    steps{
-                        timeout(time:20, unit:"MINUTES"){
-                            script{
+                stage("Build") {
+                    //when {environment name:'DEPLOY_ENV', value:'jilmy'}
+                    steps {
+                        timeout(time:20, unit:"MINUTES") {
+                            script {
                                 println('应用打包')
                                 tools.FormatOutput("应用打包",'green')
                             }
@@ -85,10 +74,10 @@ pipeline {
                 }
             
                 //代码扫描
-                stage("CodeScan"){
-                    steps{
-                        timeout(time:30, unit:"MINUTES"){
-                            script{
+                stage("CodeScan") {
+                    steps {
+                        timeout(time:30, unit:"MINUTES") {
+                            script {
                                 println('代码扫描')
                                 tools.FormatOutput("代码扫描",'green')
                             }
@@ -102,37 +91,37 @@ pipeline {
     //构建后的操作
     post {
         always { //总是执行
-            script{
+            script {
                 println("always")
             }
         }
 
         changed { //当前流水线或者阶段完成状态与之前不同时执行
-            script{
+            script {
                 currentBuild.description = "\n 发现不同，触发构建."
             }        
         }
 
         success { //成功后执行
-            script{
+            script {
                 currentBuild.description = "\n 构建成功."
             }        
         }
 
         failure { //失败后执行
-            script{
+            script {
                 currentBuild.description = "\n 构建失败."
             }        
         }
 
         unstable { //当前流水线或者阶段完成状态是"unstable",执行
-            script{
+            script {
                 currentBuild.description = "\n 状态为unstable,触发构建."
             }        
         }
 
         aborted { //取消后执行
-            script{
+            script {
                 currentBuild.description = "\n 构建取消."
             }        
         }
