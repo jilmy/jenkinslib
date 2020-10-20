@@ -13,7 +13,7 @@ pipeline {
     //agent any
     agent {
         node {
-            label "build", //指定运行节点的标签
+            label "build" //指定运行节点的标签
             customWorkspace "${workSpace}" //指定运行工作目录
         }
     }
