@@ -1,13 +1,13 @@
-#!groovy
+#! groovy
 
 //引用系统配置的jenkinslib
 @Library('jenkinslib') _
+
 def tools = new org.devops.tools()
 
 string  workSpace = "/opt/jenkins/workspace"
 
  //hello()
-
 //Pipeline流水线
 pipeline {
     //agent any
@@ -17,9 +17,9 @@ pipeline {
             customWorkspace "${workSpace}" //指定运行工作目录
         }
     }
-    
+
     //定义string类型的参数
-    parameters { string (name: 'DEPLOY_ENV', defaultValue: 'jilmy', description:'welcome to jilmy world!') }
+    parameters { string (name: 'DEPLOY_ENV', defaultValue: 'jilmy', description:'welcome to jilmy\'s devops world!') }
 
     //environment方法
     environment {
@@ -28,7 +28,7 @@ pipeline {
 
     options {
         timestamps() //预测所有由流水线生成的控制台输出，与该流水线发出的时间一致
-        skipDefaultCheckout()  //删除隐藏式checkout scm语句，在agent指令中，跳过从源代码控制中检查代码的默认情况
+        skipDefaultCheckout() //删除隐藏式checkout scm语句，在agent指令中，跳过从源代码控制中检查代码的默认情况
         disableConcurrentBuilds() //禁止并行，不允许同时执行流水线，用来防止同时访问共享资源
         timeout(time:1, unit:'HOURS') //设置流水线运行的超时阀值1小时
 
@@ -47,18 +47,19 @@ pipeline {
                     script {
                         println('获取代码')
                         tools.FormatOutput("获取代码",'green')
-                        //input id: 'Roll', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'Roll')], submitter: 'admin'
+                        //input id: 'Roll', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'roll')], submitter: 'admin'                    
                     }
                 }
-            } 
+            }
         }
-      
-        //构建和代码扫描并行执行放入一个stage中 
+
+        //构建和代码扫描并行执行放入一个stage中
         stage("ParallelStage") {
             // when {
             //     branch 'main'
             // }
             failFast true //第1个运行失败，后面全部失败
+
             parallel {
                 //构建
                 stage("Build") {
@@ -72,7 +73,7 @@ pipeline {
                         }
                     }
                 }
-            
+
                 //代码扫描
                 stage("CodeScan") {
                     steps {
@@ -84,46 +85,46 @@ pipeline {
                         }
                     }
                 }
-            }    
-        }   
+            }
+        }
     }
-
+    
     //构建后的操作
     post {
         always { //总是执行
-            script{
+            script {
                 println("always")
             }
         }
-
+    
         changed { //当前流水线或者阶段完成状态与之前不同时执行
-            script{
+            script {
                 currentBuild.description = "\n 发现有差异，触发构建."
-            }        
+            }
         }
 
         success { //成功后执行
-            script{
+            script {
                 currentBuild.description = "\n 构建成功."
-            }        
+            }
         }
 
         failure { //失败后执行
-            script{
+            script {
                 currentBuild.description = "\n 构建失败."
-            }        
+            }       
         }
-
-        unstable { //当前流水线或者阶段完成状态是"unstable",执行
-            script{
+        
+        unstable {  //当前流水线或者阶段完成状态是"unstable",执行
+            script {
                 currentBuild.description = "\n 状态为unstable,触发构建."
-            }        
+            }
         }
 
         aborted { //取消后执行
-            script{
-                currentBuild.description = "\n 构建取消."
-            }        
+            script {
+                currentBuild.description = "\n 构建取消"
+            }
         }
     }
 }
