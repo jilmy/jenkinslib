@@ -77,11 +77,8 @@ pipeline {
                     steps{
                         timeout(time:20, unit:"MINUTES"){
                             script{
-                                //println ("${version}")
                                 println('应用打包')
                                 tools.FormatOutput("应用打包",'green')
-                                //mvnHome = tool "mvn3.6.3"
-                                //println("$mvnHome")
                             }
                         }
                     }
