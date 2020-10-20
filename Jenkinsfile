@@ -11,8 +11,10 @@ string  workSpace = "/opt/jenkins/workspace"
 //Pipeline
 pipeline {
     //agent any
-    agent { node { label "build" //指定运行节点的标签
-                   customWorkspace "${workSpace}" //指定运行工作目录
+    agent {
+        node {
+            label "build", //指定运行节点的标签
+            customWorkspace "${workSpace}" //指定运行工作目录
         }
     }
     
@@ -23,11 +25,6 @@ pipeline {
     environment {
         DEVOPS = 'jenkins'
     }
-    
-    //tools方法
-    // tools {
-    //     maven 'mvn3.6.3'
-    // }
 
     options {
         timestamps() //预测所有由流水线生成的控制台输出，与该流水线发出的时间一致
