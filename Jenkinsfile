@@ -43,7 +43,7 @@ pipeline {
         //获取代码
         stage("GetCode"){ //阶段名称
             steps {
-                timeout(time:5, unit:"MINUTES") { //步骤超时时间
+                timeout(time:5, unit:"MINUTES"){ //步骤超时时间
                     script {
                         println('获取代码')
                         tools.FormatOutput("获取代码",'green')
@@ -64,7 +64,7 @@ pipeline {
                 stage("Build") {
                     //when {environment name:'DEPLOY_ENV', value:'jilmy'}
                     steps {
-                        timeout(time:20, unit:"MINUTES") {
+                        timeout(time:20, unit:"MINUTES"){
                             script{
                                 println('应用打包')
                                 tools.FormatOutput("应用打包",'green')
@@ -76,7 +76,7 @@ pipeline {
                 //代码扫描
                 stage("CodeScan") {
                     steps {
-                        timeout(time:30, unit:"MINUTES") {
+                        timeout(time:30, unit:"MINUTES"){
                             script{
                                 println('代码扫描')
                                 tools.FormatOutput("代码扫描",'green')
