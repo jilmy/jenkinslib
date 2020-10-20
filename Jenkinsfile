@@ -6,9 +6,9 @@ def tools = new org.devops.tools()
 
 string  workSpace = "/opt/jenkins/workspace"
 
- hello()
+ //hello()
 
-//Pipeline
+//Pipeline流水线
 pipeline {
     //agent any
     agent {
@@ -43,11 +43,11 @@ pipeline {
         //获取代码
         stage("GetCode") { //阶段名称
             steps {
-                timeout(time:5, unit:"MINUTES") { //步骤超时时间
+                timeout(time:5, unit:"MINUTES") { //设置获取代码的超时时间
                     script {
                         println('获取代码')
                         tools.FormatOutput("获取代码",'green')
-                        //input id: 'Trubo', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'flag')], submitter: 'admin'
+                        //input id: 'Roll', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'Roll')], submitter: 'admin'
                     }
                 }
             } 
@@ -56,14 +56,14 @@ pipeline {
         //构建和代码扫描并行执行放入一个stage中 
         stage("ParallelStage") {
             // when {
-            //     branch 'node'
+            //     branch 'main'
             // }
             failFast true //第1个运行失败，后面全部失败
             parallel {
                 //构建
                 stage("Build") {
-                    when {environment name:'DEPLOY_ENV', value:'jilmy'}
-                    steps {
+                    //when {environment name:'DEPLOY_ENV', value:'jilmy'}
+                    steps { //设置构建超时时间
                         timeout(time:20, unit:"MINUTES") {
                             script {
                                 println('应用打包')
@@ -98,7 +98,7 @@ pipeline {
 
         changed { //当前流水线或者阶段完成状态与之前不同时执行
             script{
-                currentBuild.description = "\n 发现不同，触发构建."
+                currentBuild.description = "\n 发现有差异，触发构建."
             }        
         }
 
