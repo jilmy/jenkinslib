@@ -1,0 +1,143 @@
+#!groovy
+
+//引用系统配置的jenkinslib
+@Library('jenkinslib') _
+def tools = new org.devops.tools()
+
+string  workSpace = "/opt/jenkins/workspace"
+
+ hello()
+
+//Pipeline
+pipeline {
+    //agent any
+    agent { node { label "build" //指定运行节点的标签
+                   customWorkspace "${workSpace}" //指定运行工作目录
+        }
+    }
+    
+    //定义string类型的参数
+    parameters { string (name: 'DEPLOY_ENV', defaultValue: 'jilmy', description:'welcome to jilmy world!') }
+
+    //environment方法
+    environment {
+        DEVOPS = 'jenkins'
+    }
+    
+    //tools方法
+    // tools {
+    //     maven 'mvn3.6.3'
+    // }
+
+    options {
+        timestamps() //预测所有由流水线生成的控制台输出，与该流水线发出的时间一致
+        skipDefaultCheckout()  //删除隐藏式checkout scm语句，在agent指令中，跳过从源代码控制中检查代码的默认情况
+        disableConcurrentBuilds() //禁止并行，不允许同时执行流水线，用来防止同时访问共享资源
+        timeout(time:1, unit:'HOURS') //设置流水线运行的超时阀值1小时
+
+        //buildDiscarder() //为最近的流水线运行的特定数量保存组件和控制台输出 
+        //overrideIndexTriggers() //允许覆盖分支索引触发器的默认处理
+        //skipStagesAfterUnstable() //一旦构建状态变得unstable，路过该阶段
+        //checkoutToSubdirectory() //在工作空间的子目录中自动地执行源代码控制输出
+        //retry() //在失败时，重新尝试整个流水线的指定次数
+    }
+
+    stages {
+      
+        //tools用法举例
+        //stage('toolsExample') {
+            //steps {
+                //sh 'mvn -version'
+            //}
+        //} 
+
+        //获取代码
+        stage("GetCode"){ //阶段名称
+            steps{
+                timeout(time:5, unit:"MINUTES"){ //步骤超时时间
+                    script{
+                        println('获取代码')
+                        tools.PrintMes("获取代码",'green')
+                        input id: 'Trubo', message: '是否执行应用回滚？', ok: 'yes', parameters: [choice(choices: ['true', 'flase'], description: '', name: 'flag')], submitter: 'admin'
+                    }
+                }
+            } 
+        }
+      
+        //构建和代码扫描并行执行放入一个stage中 
+        stage("Parallel Stage") {
+            // when {
+            //     branch 'node'
+            // }
+            failFast true //第1个运行失败，后面全部失败
+            parallel {
+                //构建
+                stage("Build"){
+                    when {environment name:'DEPLOY_ENV', value:'jilmy'}
+                    steps{
+                        timeout(time:20, unit:"MINUTES"){
+                            script{
+                                //println ("${version}")
+                                println('应用打包')
+                                tools.PrintMes("应用打包",'green')
+                                //mvnHome = tool "mvn3.6.3"
+                                //println("$mvnHome")
+                            }
+                        }
+                    }
+                }
+            
+                //代码扫描
+                stage("CodeScan"){
+                    steps{
+                        timeout(time:30, unit:"MINUTES"){
+                            script{
+                                println('代码扫描')
+                                tools.PrintMes("代码扫描",'green')
+                            }
+                        }
+                    }
+                }
+            }    
+        }   
+    }
+
+    //构建后的操作
+    post {
+        always { //总是执行
+            script{
+                println("always")
+            }
+        }
+
+        changed { //当前流水线或者阶段完成状态与之前不同时执行
+            script{
+                currentBuild.description = "\n 发现不同，触发构建."
+            }        
+        }
+
+        success { //成功后执行
+            script{
+                currentBuild.description = "\n 构建成功."
+            }        
+        }
+
+        failure { //失败后执行
+            script{
+                currentBuild.description = "\n 构建失败."
+            }        
+        }
+
+        unstable { //当前流水线或者阶段完成状态是"unstable",执行
+            script{
+                currentBuild.description = "\n 状态为unstable,触发构建."
+            }        
+        }
+
+        aborted { //取消后执行
+            script{
+                currentBuild.description = "\n 构建取消."
+            }        
+        }
+    }
+}
