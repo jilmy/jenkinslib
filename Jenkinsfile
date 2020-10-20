@@ -54,7 +54,7 @@ pipeline {
         }
       
         //构建和代码扫描并行执行放入一个stage中 
-        stage("Parallel Stage") {
+        stage("ParallelStage") {
             // when {
             //     branch 'node'
             // }
