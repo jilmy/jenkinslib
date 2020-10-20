@@ -1,5 +1,6 @@
 package org.devops
 
+//格式化输出
 def FormatOutput(value,color){
     colors = [
        
@@ -25,4 +26,7 @@ def FormatOutput(value,color){
         'blueSkyWhite' = "\033[46;37m >>>>>>>>>>>>>>>>>>>> ${value} <<<<<<<<<<<<<<<<<<<< \033[0m",
         'whiteBlack' = "\033[47;37m >>>>>>>>>>>>>>>>>>>> ${value} <<<<<<<<<<<<<<<<<<<< \033[0m"
     ]
+    ansiColor('xterm'){
+        println(colors[color])
+    }
 }
