@@ -42,7 +42,7 @@ pipeline {
     stages {
         //获取代码
         stage("GetCode"){ //阶段名称
-            steps {
+            steps{
                 timeout(time:5, unit:"MINUTES"){ //步骤超时时间
                     script {
                         println('获取代码')
@@ -54,16 +54,16 @@ pipeline {
         }
       
         //构建和代码扫描并行执行放入一个stage中 
-        stage("ParallelStage") {
+        stage("ParallelStage"){
             // when {
             //     branch 'node'
             // }
             failFast true //第1个运行失败，后面全部失败
             parallel {
                 //构建
-                stage("Build") {
+                stage("Build"){
                     //when {environment name:'DEPLOY_ENV', value:'jilmy'}
-                    steps {
+                    steps{
                         timeout(time:20, unit:"MINUTES"){
                             script{
                                 println('应用打包')
@@ -74,8 +74,8 @@ pipeline {
                 }
             
                 //代码扫描
-                stage("CodeScan") {
-                    steps {
+                stage("CodeScan"){
+                    steps{
                         timeout(time:30, unit:"MINUTES"){
                             script{
                                 println('代码扫描')
